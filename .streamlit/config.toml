@@ -1,0 +1,6 @@
+[theme]
+primaryColor = "#4CAF50"               # Couleur principale des boutons, sliders…
+backgroundColor = "#F0F2F6"            # Arrière-plan de la page
+secondaryBackgroundColor = "#FFFFFF"   # Fonds des composants (cards, tables…)
+textColor = "#262730"                  # Couleur du texte
+font = "sans serif"                    # Choix de police : "sans serif", "serif" ou "monospace"
