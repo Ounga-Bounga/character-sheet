@@ -13,19 +13,19 @@ st.set_page_config(
 # Titre et description
 st.title("🎲 Créateur de fiches de personnage")
 st.markdown(
-    "Remplis les champs en suivant tes règles maison : répartis 170% de caractéristiques,
-    choisis classe, compétences, posture, alignement, etc., puis clique sur Générer."
+    "Remplis les champs en suivant tes règles maison : répartis 170 % de caractéristiques, "
+    "choisis classe, compétences, posture, alignement, etc., puis clique sur Générer."
 )
 
 # --- Informations générales ---
 st.header("Informations du personnage")
 col1, col2, col3 = st.columns(3)
 with col1:
-    nom       = st.text_input("Nom du personnage")
-    niveau    = st.number_input("Niveau", min_value=1, max_value=20, value=1, step=1)
-    race      = st.selectbox("Race", ["Humain", "Elfe", "Nain", "Orc", "Autre"])
+    nom = st.text_input("Nom du personnage")
+    niveau = st.number_input("Niveau", min_value=1, max_value=20, value=1, step=1)
+    race = st.selectbox("Race", ["Humain", "Elfe", "Nain", "Orc", "Autre"])
 with col2:
-    classe    = st.selectbox(
+    classe = st.selectbox(
         "Classe (poids)",
         ["Lourd", "Moyen", "Léger"],
         help="Détermine PV/PM et armure statique"
@@ -42,8 +42,8 @@ with col3:
 # --- Répartition des caractéristiques ---
 st.header("Répartition des caractéristiques (total 170%)")
 physique = st.number_input("Physique (%)", min_value=30, max_value=70, value=60, step=1)
-mental   = st.number_input("Mental (%)",   min_value=30, max_value=70, value=60, step=1)
-social   = st.number_input("Social (%)",   min_value=30, max_value=70, value=50, step=1)
+mental = st.number_input("Mental (%)", min_value=30, max_value=70, value=60, step=1)
+social = st.number_input("Social (%)", min_value=30, max_value=70, value=50, step=1)
 
 # Vérification de la somme
 total = physique + mental + social
