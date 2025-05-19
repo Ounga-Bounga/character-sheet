@@ -1,4 +1,18 @@
 import streamlit as st
+
+# À placer en première ligne utile du fichier
+st.set_page_config(
+    page_title="Mon Créateur de Fiches",
+    page_icon="🎲",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
+
+# Ensuite seulement : vos imports et votre code
+import pandas as pd
+# … le reste de votre app …
+
+import streamlit as st
 import pandas as pd
 import json
 
