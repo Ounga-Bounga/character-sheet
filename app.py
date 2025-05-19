@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import json
 
-# Configuration de la page
+# 1. Config de la page
 st.set_page_config(
     page_title="Créateur de fiche de personnage",
     page_icon="🎲",
@@ -10,119 +10,84 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Titre et description
-st.title("🎲 Créateur de fiches de personnage")
-st.markdown(
-    "Remplis les champs en suivant tes règles maison : répartis 170 % de caractéristiques, "
-    "choisis classe, compétences, posture, alignement, etc., puis clique sur Générer."
-)
-
-# --- Informations générales ---
-st.header("Informations du personnage")
-col1, col2, col3 = st.columns(3)
-with col1:
-    nom = st.text_input("Nom du personnage")
-    niveau = st.number_input("Niveau", min_value=1, max_value=20, value=1, step=1)
-    race = st.selectbox("Race", ["Humain", "Elfe", "Nain", "Orc", "Autre"])
-with col2:
-    classe = st.selectbox(
-        "Classe (poids)",
-        ["Lourd", "Moyen", "Léger"],
-        help="Détermine PV/PM et armure statique"
-    )
-    alignement = st.selectbox(
-        "Alignement",
-        ["Loyal Bon", "Neutre Bon", "Chaotique Bon",
-         "Loyal Neutre", "Neutre", "Chaotique Neutre",
-         "Loyal Mauvais", "Neutre Mauvais", "Chaotique Mauvais"]
-    )
-with col3:
-    st.markdown("**Principe & Alignement** donne +5% critique et +5% échec critique")
-
-# --- Répartition des caractéristiques ---
-st.header("Répartition des caractéristiques (total 170%)")
-physique = st.number_input("Physique (%)", min_value=30, max_value=70, value=60, step=1)
-mental = st.number_input("Mental (%)", min_value=30, max_value=70, value=60, step=1)
-social = st.number_input("Social (%)", min_value=30, max_value=70, value=50, step=1)
-
-# Vérification de la somme
-total = physique + mental + social
+# 2. Widgets d’entrée
+st.header("Création du personnage")
+nom       = st.text_input("Nom du personnage")
+niveau    = st.number_input("Niveau", 1, 20, 1)
+race      = st.selectbox("Race", ["Humain","Elfe","Nain","Orc","Autre"])
+classe    = st.selectbox("Classe (poids)", ["Lourd","Moyen","Léger"])
+alignement= st.selectbox("Alignement", [
+    "Loyal Bon","Neutre Bon","Chaotique Bon",
+    "Loyal Neutre","Neutre","Chaotique Neutre",
+    "Loyal Mauvais","Neutre Mauvais","Chaotique Mauvais"
+])
+# Caractéristiques
+physique  = st.slider("Physique (%)",   30,70,60)
+mental    = st.slider("Mental (%)",     30,70,60)
+social    = st.slider("Social (%)",     30,70,50)
+# Validation somme
+total = physique+mental+social
 if total != 170:
-    st.error(f"La somme doit être de 170%. Actuellement : {total}%.")
+    st.error(f"Somme = {total}%, doit faire 170%")
 
-# --- Sélection de compétences ---
-st.header("Compétences (+10% chacune)")
-skills_list = [
-    "Discrétion", "Botanique", "Mécanisme", "Perception",
-    "Persuasion", "Athlétisme", "Arcane", "Histoire"
-]
-competences = st.multiselect(
-    "Choisis 4 compétences", skills_list,
-    help="4 compétences maximum à +10% chacune"
-)
-if len(competences) != 4:
-    st.error("Sélectionne exactement 4 compétences.")
+# Compétences et dons
+skills_list = ["Discrétion","Botanique","Mécanisme","Perception",
+               "Persuasion","Athlétisme","Arcane","Histoire"]
+competences = st.multiselect("Choisis 4 compétences (+10%)", skills_list)
+dons_count  = {"Lourd":1,"Moyen":2,"Léger":3}[classe]
+don_noms    = [st.text_input(f"Don {i+1}") for i in range(dons_count)]
 
-# --- Choix de posture ---
-st.header("Posture (état passif)")
-posture = st.selectbox(
-    "Posture",
-    ["Aggressive ⚔️", "Défensive 🛡️", "Focus 🌀"],
-    help="Chaque posture apporte un bonus spécifique"
-)
+# Équipement
+equipement_list = st.text_area(
+    "Équipement (une ligne par item)",
+    value="1d6 - bâton\n1d12 - pistolet\nhabits, kit, tente"
+).splitlines()
 
-# --- Calcul PV / PM et armure statique ---
-base_pv, base_pm = 6, 4
-mod_map = {"Lourd": (4, -2), "Moyen": (1, 1), "Léger": (-2, 3)}
-armure_map = {"Lourd": 3, "Moyen": 2, "Léger": 1}
-mod_pv, mod_pm = mod_map.get(classe, (0, 0))
-pv = base_pv + mod_pv
-pm = base_pm + mod_pm
-armure = armure_map.get(classe)
+# Calcul PV/PM/armure
+base_pv,base_pm = 6,4
+mod_pv,mod_pm   = {"Lourd":(4,-2),"Moyen":(1,1),"Léger":(-2,3)}[classe]
+pv, pm          = base_pv+mod_pv, base_pm+mod_pm
+armure          = {"Lourd":3,"Moyen":2,"Léger":1}[classe]
 
-# --- Nombre de dons selon la classe ---
-dons_count_map = {"Lourd": 1, "Moyen": 2, "Léger": 3}
-dons_count = dons_count_map.get(classe, 0)
-st.header(f"Dons (tu peux en choisir {dons_count})")
-don_noms = []
-for i in range(dons_count):
-    don = st.text_input(f"Don {i+1}")
-    don_noms.append(don)
+# 3. Injection CSS
+st.markdown("""
+<style> 
+  /* ton CSS ici… */ 
+</style>
+""", unsafe_allow_html=True)
 
-# --- Bouton Générer et affichage ---
-if st.button("🖨 Générer la fiche"):
-    if total != 170 or len(competences) != 4:
-        st.warning("Corrige les erreurs avant de générer la fiche.")
-    else:
-        # Assemblage de la fiche
-        fiche = {
-            "Nom": nom,
-            "Niveau": niveau,
-            "Race": race,
-            "Classe": classe,
-            "Alignement": alignement,
-            "Physique_%": physique,
-            "Mental_%": mental,
-            "Social_%": social,
-            "PV": pv,
-            "PM": pm,
-            "Armure_Statique": armure,
-            "Posture": posture,
-            "Compétences": ", ".join(competences),
-            "Nombre_de_dons": dons_count,
-            "Dons": ", ".join([d for d in don_noms if d])
-        }
+# 4. Affichage HTML/CSS
+image_url = "https://…ton-image.png"
+st.markdown(f"""
+<div class="header">
+  <h2>{nom or '–'} lvl {niveau}</h2>
+  <img src="{image_url}" width="150"/>
+</div>
+<ul>
+  <li>{pv} PV</li>
+  <li>{pm} PM</li>
+  <li>Classe : {classe}</li>
+  <li>Posture : {posture}</li>
+</ul>
+<div class="section-box physique"><h3>Physique</h3><p>{physique}%</p></div>
+<div class="section-box mental">  <h3>Mental</h3>  <p>{mental}%</p></div>
+<div class="section-box social">  <h3>Social</h3>  <p>{social}%</p></div>
+<div class="alignement">{alignement} — esprit libre +5% critique/échec</div>
+""", unsafe_allow_html=True)
 
-        # Affichage
-        st.subheader("📋 Fiche de personnage")
-        df = pd.DataFrame.from_dict(fiche, orient="index", columns=["Valeur"]).reset_index()
-        df.columns = ["Attribut", "Valeur"]
-        st.table(df)
+# 5. Compétences en dropdown horizontal
+st.markdown("#### Compétences (+10%)")
+cols = st.columns(4)
+for i, skill in enumerate(competences):
+    cols[i].selectbox("", [f"{skill} 10%"], key=f"skill_{i}")
 
-        # Téléchargement JSON
-        st.download_button(
-            label="📥 Télécharger la fiche (JSON)",
-            data=json.dumps(fiche, ensure_ascii=False, indent=2),
-            file_name=f"{nom or 'fiche'}_personnage.json",
-            mime="application/json"
-        )
+# 6. Dons & Équipement en deux colonnes
+col1, col2 = st.columns(2, gap="large")
+with col1:
+    st.subheader("Dons")
+    for don in don_noms:
+        st.write(f"- {don}")
+with col2:
+    st.subheader("Équipement")
+    for item in equipement_list:
+        st.write(f"- {item}")
