@@ -29,34 +29,35 @@ st.header("Création du personnage")
 col1, col2, col3, col4 = st.columns([3, 3, 3, 1])
 
 with col1:
-    st.markdown("<h3>🤖 Comment t'appelles-tu ?</h3>", unsafe_allow_html=True)
+    st.markdown("**🤖 Comment t'appelles-tu ?**")
     nom = st.text_input("Nom du personnage")
 
 with col2:
-    st.markdown("<h3>🛡️ Choisis ton type de classe</h3>", unsafe_allow_html=True)
+    st.markdown("**🛡️ Choisis ton type de classe**")
     classe = st.selectbox("", ["Lourde", "Moyenne", "Légère"])
 
 with col3:
-    st.markdown("<h3>⚔️ Choisis ta posture de base</h3>", unsafe_allow_html=True)
+    st.markdown("**⚔️ Choisis ta posture de base**")
     posture = st.selectbox(
         "",
         ["Posture Agressive", "Posture Defensive", "Posture Focus"]
     )
     posture_bonuses = {
-        "Posture Agressive": "Tes armes infligent les dégâts max +1. Tes chances de coups critiques passent à 10%.",
-        "Posture Defensive": "Tu peux parer/esquiver une attaque en réussissant un jet de Physique.",
-        "Posture Focus": "Tes sorts coûtent 1 point de magie en moins. Gagne +5% à tes caractéristiques."
+        "Posture Agressive": "Tes armes infligent les dégâts max +1. Tes chances de coups critiques passent à 10 %.",
+        "Posture Defensive": "Tu peux parer/esquiver une attaque sur un jet de Physique réussi.",
+        "Posture Focus": "Tes sorts coûtent 1 PM en moins. Gagne +5 % à toutes tes caractéristiques."
     }
     st.markdown(
-        f"<p style='text-align:left; font-size:0.9rem;'>{posture_bonuses[posture]}</p>",
+        f"<div style='text-align:left; font-size:0.9rem;'>{posture_bonuses[posture]}</div>",
         unsafe_allow_html=True
     )
 
 with col4:
-    st.markdown("<h3>Niveau</h3>", unsafe_allow_html=True)
+    st.markdown("**Niveau**")
     st.markdown(
-        "<div style='border:1px solid #ddd; padding:0.5rem; border-radius:4px;"
-        " text-align:center; font-size:1.5rem; font-weight:bold;'>1</div>",
+        "<div style='border:1px solid #ddd; padding:0.5rem; "
+        "border-radius:4px; text-align:center; font-size:1.5rem; "
+        "font-weight:bold;'>1</div>",
         unsafe_allow_html=True
     )
 
@@ -71,7 +72,7 @@ mod_pv, mod_pm = mod_map[classe]
 pv = base_pv + mod_pv
 pm = base_pm + mod_pm
 
-# 6. Affichage des points de vie et de magie sous le nom
+# 6. Affichage des PV/PM
 with col1:
     st.markdown(f"🩸 **Tes points de vie → {pv}**")
     st.markdown(f"✨ **Tes points de magie → {pm}**")
@@ -79,26 +80,26 @@ with col1:
 # 7. Quelles sont tes Statistiques ?
 st.markdown("<h2>📊 Quelles sont tes Statistiques ?</h2>", unsafe_allow_html=True)
 stats_col1, stats_col2, stats_col3 = st.columns(3)
-# Jauges sliders pour répartir 170%, max 70%
 with stats_col1:
     physique = st.slider("Physique (%)", 30, 70, 30, step=1)
 with stats_col2:
-    mental   = st.slider("Mental (%)",   30, 70, 30, step=1)
+    mental = st.slider("Mental (%)", 30, 70, 30, step=1)
 with stats_col3:
-    social   = st.slider("Social (%)",   30, 70, 30, step=1)
-# Vérification de la somme des stats
+    social = st.slider("Social (%)", 30, 70, 30, step=1)
+
+# Vérification de la somme
 total_stats = physique + mental + social
 if total_stats != 170:
-    st.error(f"La somme des statistiques doit être de 170%, actuellement {total_stats}%.")
+    st.error(f"La somme des statistiques doit être de 170 %, actuellement {total_stats} %.")
 
 # 8. Choisis tes compétences
-st.markdown("<h2>📝 Choisis tes compétences (+10%)</h2>", unsafe_allow_html=True)
+st.markdown("<h2>📝 Choisis tes compétences (+10 %)</h2>", unsafe_allow_html=True)
 skills = [
-    "Discrétion +10%", "Combats aux lames +10%", "Artisanat +10%", "Persuasion +10%",
-    "Tromperie +10%", "Arcane +10%", "Survie +10%", "Athlétisme +10%",
-    "Perception +10%", "Histoire +10%", "Botanique +10%", "Mécanisme +10%",
-    "Natation +10%", "Pilotage +10%", "Négociation +10%", "Investigation +10%",
-    "Intimidation +10%", "Danse +10%", "Acrobatie +10%", "Soin +10%"
+    "Discrétion +10 %", "Combats aux lames +10 %", "Artisanat +10 %", "Persuasion +10 %",
+    "Tromperie +10 %", "Arcane +10 %", "Survie +10 %", "Athlétisme +10 %",
+    "Perception +10 %", "Histoire +10 %", "Botanique +10 %", "Mécanisme +10 %",
+    "Natation +10 %", "Pilotage +10 %", "Négociation +10 %", "Investigation +10 %",
+    "Intimidation +10 %", "Danse +10 %", "Acrobatie +10 %", "Soin +10 %"
 ]
 cols_comp = st.columns(4)
 choix_competences = []
