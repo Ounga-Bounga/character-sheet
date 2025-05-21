@@ -1,24 +1,18 @@
 import streamlit as st
+import pandas as pd
+import json
 
+# 1. Configuration de la page
 st.set_page_config(
-    page_title="Créer ton personnage niveau 1 !",
+    page_title="Créateur de fiche de personnage",
     page_icon="🎲",
-    layout="wide"
+    layout="wide",
+    initial_sidebar_state="expanded"
 )
 
-# Injection CSS pour centrer automatiquement tous les <h3>
-st.markdown(
-    """
-    <style>
-      h3 { text-align: center; }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-
-st.title("Créer ton personnage niveau 1 !")
-
-# Trois colonnes côte à côte
+# 2. Widgets d’entrée
+st.header("Création du personnage")
+# Swap : colonne 1 = Nom, colonne 2 = Classe, colonne 3 = Niveau
 col1, col2, col3 = st.columns(3)
 
 with col1:
@@ -26,10 +20,16 @@ with col1:
     nom = st.text_input("Nom du personnage")
 
 with col2:
-    st.markdown("<h3>🎚️ Niveau</h3>", unsafe_allow_html=True)
-    # Centré inline pour plus de contrôle
-    st.markdown("<div style='font-size:2rem; text-align:center;'>1</div>", unsafe_allow_html=True)
-
-with col3:
     st.markdown("<h3>🛡️ Choisis ton type de classe</h3>", unsafe_allow_html=True)
     classe = st.selectbox("", ["Lourd", "Moyen", "Léger"])
+
+with col3:
+    st.markdown("<h3>Niveau</h3>", unsafe_allow_html=True)
+    # Affichage du niveau dans un petit bloc
+    st.markdown(
+        "<div style='border:1px solid #ddd; padding:0.5rem; border-radius:4px; "
+      "text-align:center; font-size:1.5rem; font-weight:bold;'>1</div>",
+        unsafe_allow_html=True
+    )
+
+# (le reste du code suit...)
