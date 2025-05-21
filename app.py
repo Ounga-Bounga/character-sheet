@@ -64,8 +64,8 @@ pv = base_pv + mod_pv
 pm = base_pm + mod_pm
 
 with col4:
-    st.markdown("**❤️ Tes PV / PM**")
-    st.markdown(f"🩸 **PV → {pv}**")
+    st.markdown("**Tes Points de vie & magie**")
+    st.markdown(f"❤️ **PV → {pv}**")
     st.markdown(f"✨ **PM → {pm}**")
 
 # 6. Quelles sont tes Statistiques ?
