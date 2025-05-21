@@ -33,33 +33,24 @@ with col1:
     nom = st.text_input("Nom du personnage")
 
 with col2:
-    st.markdown("**🛡️ Choisis ton type de classe**")
-    classe = st.selectbox("", ["Lourde", "Moyenne", "Légère"])
-
-with col3:
     st.markdown("**⚔️ Choisis ta posture de base**")
     posture = st.selectbox(
         "",
         ["Posture Agressive", "Posture Defensive", "Posture Focus"]
     )
     posture_bonuses = {
-        "Posture Agressive": "Tes armes infligent les dégâts max +1. Tes chances de coups critiques passent à 10 %.",
-        "Posture Defensive": "Tu peux parer/esquiver une attaque sur un jet de Physique réussi.",
-        "Posture Focus": "Tes sorts coûtent 1 PM en moins. Gagne +5 % à toutes tes caractéristiques."
+        "Posture Agressive": "Tes armes infligent les dégâts max +1. Tes coups critiques à 10 %.",
+        "Posture Defensive": "Tu peux parer/esquiver sur un jet de Physique réussi.",
+        "Posture Focus": "Tes sorts coûtent 1 PM en moins et +5 % aux carac."
     }
     st.markdown(
         f"<div style='text-align:left; font-size:0.9rem;'>{posture_bonuses[posture]}</div>",
         unsafe_allow_html=True
     )
 
-with col4:
-    st.markdown("**Niveau**")
-    st.markdown(
-        "<div style='border:1px solid #ddd; padding:0.5rem; "
-        "border-radius:4px; text-align:center; font-size:1.5rem; "
-        "font-weight:bold;'>1</div>",
-        unsafe_allow_html=True
-    )
+with col3:
+    st.markdown("**🛡️ Choisis ton type de classe**")
+    classe = st.selectbox("", ["Lourde", "Moyenne", "Légère"])
 
 # 5. Calcul des PV / PM selon la classe
 base_pv, base_pm = 6, 4
@@ -72,39 +63,30 @@ mod_pv, mod_pm = mod_map[classe]
 pv = base_pv + mod_pv
 pm = base_pm + mod_pm
 
-# 6. Affichage des PV/PM
-with col1:
-    st.markdown(f"🩸 **Tes points de vie → {pv}**")
-    st.markdown(f"✨ **Tes points de magie → {pm}**")
+with col4:
+    st.markdown("**❤️ Tes PV / PM**")
+    st.markdown(f"🩸 **PV → {pv}**")
+    st.markdown(f"✨ **PM → {pm}**")
 
-# 7. Quelles sont tes Statistiques ?
+# 6. Quelles sont tes Statistiques ?
 st.markdown("<h2>📊 Quelles sont tes Statistiques ?</h2>", unsafe_allow_html=True)
 stats_col1, stats_col2, stats_col3 = st.columns(3)
 
 with stats_col1:
-    physique = st.slider(
-        "Physique (%)", min_value=30, max_value=70, value=30, step=5, key="physique"
-    )
+    physique = st.slider("Physique (%)", 30, 70, 30, step=5, key="physique")
 with stats_col2:
-    mental = st.slider(
-        "Mental (%)", min_value=30, max_value=70, value=30, step=5, key="mental"
-    )
+    mental   = st.slider("Mental (%)",   30, 70, 30, step=5, key="mental")
 with stats_col3:
-    social = st.slider(
-        "Social (%)", min_value=30, max_value=70, value=30, step=5, key="social"
-    )
+    social   = st.slider("Social (%)",   30, 70, 30, step=5, key="social")
 
 # Vérification de la somme et affichage du % restant
-
 total_stats = physique + mental + social
 if total_stats < 170:
-    restant = 170 - total_stats
-    st.warning(f"Il reste {restant}% à répartir.")
+    st.warning(f"Il reste {170 - total_stats}% à répartir.")
 elif total_stats > 170:
-    excedent = total_stats - 170
-    st.error(f"Tu as dépassé de {excedent}%. Réduis tes statistiques." )
+    st.error(f"Tu as dépassé de {total_stats - 170}%. Réduis tes statistiques.")
 
-# 8. Choisis tes compétences
+# 7. Choisis tes compétences
 st.markdown("<h2>📝 Choisis tes compétences (+10 %)</h2>", unsafe_allow_html=True)
 skills = [
     "Discrétion +10 %", "Combats aux lames +10 %", "Artisanat +10 %", "Persuasion +10 %",
@@ -120,4 +102,4 @@ for i in range(4):
         choix = st.selectbox(f"Compétence {i+1}", ["──"] + skills, key=f"comp{i+1}")
         choix_competences.append(choix)
 
-# (le reste de ton code suit ici...)
+# (Le reste de ton code suit ici...)
