@@ -137,7 +137,21 @@ for i in range(4):
         else:
             choix_competences.append(choix)
 
-# 9. Choix de l'arme principale, secondaire et armure
+# 9. Section Sorts (adaptée selon la classe)
+num_sorts = {"Lourde": 1, "Moyenne": 2, "Légère": 3}.get(classe, 0)
+if num_sorts > 0:
+    st.markdown("<h2>🪄 Choisis tes Sorts</h2>", unsafe_allow_html=True)
+    sorts = []
+    sort_cols = st.columns(num_sorts)
+    for idx, col in enumerate(sort_cols):
+        with col:
+            st.markdown(f"**Sort {idx+1}**")
+            nom_sort = st.text_input(f"Nom du sort {idx+1}", key=f"nom_sort_{idx}")
+            cout_pm = st.number_input(f"Coût en PM pour sort {idx+1}", min_value=0, key=f"cout_sort_{idx}")
+            desc_sort = st.text_area(f"Description du sort {idx+1}", key=f"desc_sort_{idx}")
+            sorts.append({"nom": nom_sort, "cout_pm": cout_pm, "description": desc_sort})
+
+# 10. Choix de l'arme principale, secondaire et armure
 st.markdown("<h2>🛠️  Arme & Armure</h2>", unsafe_allow_html=True)
 arm_cols = st.columns(3)
 with arm_cols[0]:
@@ -150,7 +164,7 @@ with arm_cols[1]:
     st.markdown("**Arme Secondaire**")
     arme2 = st.selectbox("", [
         "──", "1d4 - dague/poing", "1d6 - épée/arc", "1d8 - épée longue",
-        "1d10 - épée à deux mains", "1d12 - arbalète lourde", "Fusil/Pistolet (recharge mouvement)"
+        "1d10 - épée à deux mains", "1d12 -	arbalète lourde", "Fusil/Pistolet (recharge mouvement)"
     ], key="arme2")
 with arm_cols[2]:
     st.markdown("**Type d'Armure**")
@@ -158,7 +172,7 @@ with arm_cols[2]:
         "──", "Protège 3 (armure lourde)", "Protège 2 (armure moyenne)", "Protège 1 (armure légère)"
     ], key="armure")
 
-# 10. Équipement
+# 11. Équipement
 st.markdown("<h2>🎒 Équipement</h2>", unsafe_allow_html=True)
 eq_cols = st.columns(2)
 equipement_options = [
@@ -171,3 +185,35 @@ equipement = []
 for col in eq_cols:
     for idx in range(4):
         key = f"equip_{eq_cols.index(col)}_{idx}"
+        choix_eq = col.selectbox("", ["──"] + equipement_options, key=key)
+        if choix_eq == "Autre":
+            autres = col.text_input("Précisez autre équipement", key=f"other_{key}")
+            equipement.append(autres)
+        else:
+            equipement.append(choix_eq)
+
+# 12. Génération de la fiche finale
+fiche = {
+    "nom": nom,
+    "posture": posture,
+    "classe": classe,
+    "pv": pv,
+    "pm": pm,
+    "stats": {"physique": physique, "mental": mental, "social": social},
+    "alignement": alignment,
+    "competences": choix_competences,
+    "sorts": sorts if num_sorts>0 else [],
+    "armes": {"principale": arme1, "secondaire": arme2, "armure": armure},
+    "equipement": equipement
+}
+
+st.markdown("<h2>📜 Fiche de personnage</h2>", unsafe_allow_html=True)
+st.json(fiche)
+
+# Optionnel : télécharger la fiche
+st.download_button(
+    label="Télécharger la fiche JSON", 
+    data=json.dumps(fiche, ensure_ascii=False, indent=2).encode('utf-8'),
+    file_name=f"fiche_{nom or 'perso'}.json",
+    mime='application/json'
+)
