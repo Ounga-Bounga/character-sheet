@@ -18,7 +18,7 @@ st.markdown("""
     """, unsafe_allow_html=True)
 
 # 3. Titre principal centré
-st.markdown("<h1>Abra Cadabra..</h1>", unsafe_allow_html=True)
+st.markdown("<h1>✨Abra Cadabra✨</h1>", unsafe_allow_html=True)
 
 # 4. Widgets d’entrée
 st.header("Créer ton personnage lvl 1 !")
