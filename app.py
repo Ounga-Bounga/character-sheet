@@ -33,34 +33,29 @@ with col1:
 with col2:
     st.markdown("**⚔️ Choisis ta posture de base**")
     posture = st.selectbox(
-        "",
-        ["──", "Posture Agressive", "Posture Defensive", "Posture Focus"],
-        key="posture"
+        "", ["──", "Posture Agressive", "Posture Defensive", "Posture Focus"], key="posture"
     )
     posture_bonuses = {
         "Posture Agressive": (
-            "Tes armes infligent les dégâts max +1.\n"
-            "Tes coups critiques passent à 10 %."
+            "Tes armes infligent les dégâts max +1."
+            "\nTes coups critiques passent à 10 %."
         ),
         "Posture Defensive": "Tu peux parer ou esquiver grâce à un jet de Physique réussi.",
         "Posture Focus": (
-            "Tes sorts coûtent 1 PM en moins.\n"
-            "Gagne +5 % aux caractéristiques."
+            "Tes sorts coûtent 1 PM en moins."
+            "\nGagne +5 % aux caractéristiques."
         )
     }
     if posture != "──":
         st.markdown(
-            f"<div style='text-align:left; white-space:pre-line; font-size:0.9rem;'>"
-            f"{posture_bonuses[posture]}</div>",
+            f"<div style='text-align:left; white-space:pre-line; font-size:0.9rem;'>{posture_bonuses[posture]}</div>",
             unsafe_allow_html=True
         )
 
 with col3:
     st.markdown("**🛡️ Choisis ton type de classe**")
     classe = st.selectbox(
-        "",
-        ["──", "Lourde", "Moyenne", "Légère"],
-        key="classe"
+        "", ["──", "Lourde", "Moyenne", "Légère"], key="classe"
     )
     class_info = {
         "Lourde": "+4 pv\n-2 pm\n1 sort magique",
@@ -69,8 +64,7 @@ with col3:
     }
     if classe != "──":
         st.markdown(
-            f"<div style='text-align:left; white-space:pre-line; font-size:0.9rem;'>"
-            f"{class_info[classe]}</div>",
+            f"<div style='text-align:left; white-space:pre-line; font-size:0.9rem;'>{class_info[classe]}</div>",
             unsafe_allow_html=True
         )
 
@@ -88,41 +82,20 @@ with col4:
 # 6. Quelles sont tes Statistiques ?
 st.markdown("<h2>📊 Quelles sont tes Statistiques ?</h2>", unsafe_allow_html=True)
 stats_col1, stats_col2, stats_col3 = st.columns(3)
-
 with stats_col1:
-    st.markdown("<h3>💪 **Physique**</h3>", unsafe_allow_html=True)
+    st.markdown("<h3>💪 Physique</h3>", unsafe_allow_html=True)
     physique = st.slider(
-        "",
-        min_value=30,
-        max_value=70,
-        value=30,
-        step=5,
-        key="physique",
-        orientation="vertical"
+        "Physique (%)", 30, 70, 30, step=5, key="physique"
     )
-
 with stats_col2:
-    st.markdown("<h3>🧠 **Mental**</h3>", unsafe_allow_html=True)
-    mental = st.slider(
-        "",
-        min_value=30,
-        max_value=70,
-        value=30,
-        step=5,
-        key="mental",
-        orientation="vertical"
+    st.markdown("<h3>🧠 Mental</h3>", unsafe_allow_html=True)
+    mental   = st.slider(
+        "Mental (%)",   30, 70, 30, step=5, key="mental"
     )
-
 with stats_col3:
-    st.markdown("<h3>🗣️ **Social**</h3>", unsafe_allow_html=True)
-    social = st.slider(
-        "",
-        min_value=30,
-        max_value=70,
-        value=30,
-        step=5,
-        key="social",
-        orientation="vertical"
+    st.markdown("<h3>🗣️ Social</h3>", unsafe_allow_html=True)
+    social   = st.slider(
+        "Social (%)",   30, 70, 30, step=5, key="social"
     )
 
 # Vérification de la somme et affichage du % restant ou excédent
