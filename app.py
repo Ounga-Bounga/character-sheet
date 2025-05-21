@@ -25,8 +25,8 @@ st.markdown("<h1>Créer ton personnage niveau 1 !</h1>", unsafe_allow_html=True)
 
 # 4. Widgets d’entrée
 st.header("Création du personnage")
-# Colonnes 40% / 40% / 20%
-col1, col2, col3 = st.columns([4, 4, 2])
+# Colonnes 4 colonnes (nom, classe, posture, niveau)
+col1, col2, col3, col4 = st.columns(4)
 
 with col1:
     st.markdown("<h3>🤖 Comment t'appelles-tu ?</h3>", unsafe_allow_html=True)
@@ -37,12 +37,21 @@ with col2:
     classe = st.selectbox("", ["Lourd", "Moyen", "Léger"])
 
 with col3:
+    st.markdown("<h3>⚔️ Choisis ta posture de base</h3>", unsafe_allow_html=True)
+    posture = st.selectbox("", ["Posture Agressive", "Posture Defensive", "Posture Focus"])
+    # Affichage du bonus de posture
+    posture_bonuses = {
+        "Posture Agressive": "Inflige dégâts max +1 & +5% de chance de coup/échec critique",
+        "Posture Defensive": "Peut parer/esquiver sur jet de Physique réussi",
+        "Posture Focus": "Sort coûte 1 PM en moins & +5% caractéristiques"
+    }
+    st.markdown(f"<p style='text-align:center; font-size:0.9rem;'>{posture_bonuses[posture]}</p>", unsafe_allow_html=True)
+
+with col4:
     st.markdown("<h3>Niveau</h3>", unsafe_allow_html=True)
     st.markdown(
-        "<div style='"
-        "border:1px solid #ddd; padding:0.5rem; border-radius:4px; "
-        "text-align:center; font-size:1.5rem; font-weight:bold;"
-        "'>1</div>",
+        "<div style='border:1px solid #ddd; padding:0.5rem; border-radius:4px; "
+        "text-align:center; font-size:1.5rem; font-weight:bold;'>1</div>",
         unsafe_allow_html=True
     )
 
