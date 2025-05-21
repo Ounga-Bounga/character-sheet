@@ -13,7 +13,7 @@ st.set_page_config(
 # 2. Widgets d’entrée
 st.header("Création du personnage")
 # Swap : colonne 1 = Nom, colonne 2 = Classe, colonne 3 = Niveau
-col1, col2, col3 = st.columns(3)
+col1, col2, col3 = st.columns([4, 4, 2])  # rapport 40%, 40%, 20%
 
 with col1:
     st.markdown("<h3>🤖 Comment t'appelles-tu ?</h3>", unsafe_allow_html=True)
