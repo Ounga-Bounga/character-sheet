@@ -38,12 +38,16 @@ with col2:
         "",
         ["Posture Agressive", "Posture Defensive", "Posture Focus"]
     )
+    # Posture bonuses avec retours à la ligne
     posture_bonuses = {
-        "Posture Agressive": "Tes armes infligent les dégâts max +1." 
-"Tes coups critiques passent à 10 %.",
-        "Posture Defensive": "Tu peux parer ou esquiver grâce à un jet de Physique réussi.",
-        "Posture Focus": "Tes sorts coûtent 1 PM en moins." 
-"Gagne +5 % aux caractéristiques."
+        "Posture Agressive":
+            "Tes armes infligent les dégâts max +1.<br>"
+            "Tes coups critiques passent à 10 %.",
+        "Posture Defensive":
+            "Tu peux parer ou esquiver grâce à un jet de Physique réussi.",
+        "Posture Focus":
+            "Tes sorts coûtent 1 PM en moins.<br>"
+            "Gagne +5 % aux caractéristiques."
     }
     st.markdown(
         f"<div style='text-align:left; font-size:0.9rem;'>{posture_bonuses[posture]}</div>",
@@ -58,7 +62,7 @@ with col3:
 base_pv, base_pm = 6, 4
 mod_map = {
     "Lourde": (4, -2),
-    "Moyenne": (1,  1),
+    "Moyenne": (1, 1),
     "Légère": (-2, 3)
 }
 mod_pv, mod_pm = mod_map[classe]
@@ -104,4 +108,4 @@ for i in range(4):
         choix = st.selectbox(f"Compétence {i+1}", ["──"] + skills, key=f"comp{i+1}")
         choix_competences.append(choix)
 
-# (Le reste de ton code suit ici...)
+# (le reste de ton code suit ici...)
