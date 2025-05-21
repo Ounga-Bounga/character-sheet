@@ -43,9 +43,9 @@ with col3:
         ["Posture Agressive", "Posture Defensive", "Posture Focus"]
     )
     posture_bonuses = {
-        "Posture Agressive": "Inflige dégâts max +1 & +5% de chance de coup/échec critique",
-        "Posture Defensive": "Peut parer/esquiver sur jet de Physique réussi",
-        "Posture Focus": "Sort coûte 1 PM en moins & +5% caractéristiques"
+        "Posture Agressive": "Tes armes infligent les dégâts max +1. Tes chances de coups critiques passent a 10%.",
+        "Posture Defensive": "Tu peux parer/esquiver une attaque en réussissant un jet de physique.",
+        "Posture Focus": "Tes sorts coûtent 1 point de magie en moins. Gagne +5% à tes caractéristiques."
     }
     st.markdown(
         f"<p style='text-align:center; font-size:0.9rem;'>{posture_bonuses[posture]}</p>",
