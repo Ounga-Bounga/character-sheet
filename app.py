@@ -14,7 +14,7 @@ st.set_page_config(
 st.markdown(
     """
     <style>
-      h1, h3 { text-align: center !important; }
+      h1, h2, h3 { text-align: center !important; }
     </style>
     """,
     unsafe_allow_html=True
@@ -76,9 +76,23 @@ with col1:
     st.markdown(f"🩸 **Tes points de vie → {pv}**")
     st.markdown(f"✨ **Tes points de magie → {pm}**")
 
-# 7. Choisis tes compétences
+# 7. Quelles sont tes Statistiques ?
+st.markdown("<h2>📊 Quelles sont tes Statistiques ?</h2>", unsafe_allow_html=True)
+stats_col1, stats_col2, stats_col3 = st.columns(3)
+# Jauges sliders pour répartir 170%, max 70%
+with stats_col1:
+    physique = st.slider("Physique (%)", 30, 70, 30, step=1)
+with stats_col2:
+    mental   = st.slider("Mental (%)",   30, 70, 30, step=1)
+with stats_col3:
+    social   = st.slider("Social (%)",   30, 70, 30, step=1)
+# Vérification de la somme des stats
+total_stats = physique + mental + social
+if total_stats != 170:
+    st.error(f"La somme des statistiques doit être de 170%, actuellement {total_stats}%.")
+
+# 8. Choisis tes compétences
 st.markdown("<h2>📝 Choisis tes compétences (+10%)</h2>", unsafe_allow_html=True)
-# Quatre blocs côte à côte pour 4 compétences
 skills = [
     "Discrétion +10%", "Combats aux lames +10%", "Artisanat +10%", "Persuasion +10%",
     "Tromperie +10%", "Arcane +10%", "Survie +10%", "Athlétisme +10%",
@@ -86,7 +100,6 @@ skills = [
     "Natation +10%", "Pilotage +10%", "Négociation +10%", "Investigation +10%",
     "Intimidation +10%", "Danse +10%", "Acrobatie +10%", "Soin +10%"
 ]
-
 cols_comp = st.columns(4)
 choix_competences = []
 for i in range(4):
