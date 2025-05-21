@@ -90,7 +90,7 @@ with stats_col1:
 with stats_col2:
     st.markdown("<h3>🧠 Mental</h3>", unsafe_allow_html=True)
     mental   = st.slider(
-        "Mental (%)",   30, 70, 30, step=5, key="mental"
+        "Mental (%)",   30, 70, 30, step=5,
     )
 with stats_col3:
     st.markdown("<h3>🗣️ Social</h3>", unsafe_allow_html=True)
