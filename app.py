@@ -171,11 +171,3 @@ equipement = []
 for col in eq_cols:
     for idx in range(4):
         key = f"equip_{eq_cols.index(col)}_{idx}"
-        choix_eq = col.selectbox("", ["──"] + equipement_options, key=key)
-        if choix_eq == "Autre":
-            autres = col.text_input("Précisez autre équipement", key=f"other_{key}")
-            equipement.append(autres)
-        else:
-            equipement.append(choix_eq)
-
-# (le reste de ton code suit ici...)
