@@ -43,8 +43,8 @@ with col3:
         ["Posture Agressive", "Posture Defensive", "Posture Focus"]
     )
     posture_bonuses = {
-        "Posture Agressive": "Tes armes infligent les dégâts max +1. Tes chances de coups critiques passent a 10%.",
-        "Posture Defensive": "Tu peux parer/esquiver une attaque en réussissant un jet de physique.",
+        "Posture Agressive": "Tes armes infligent les dégâts max +1. Tes chances de coups critiques passent à 10%.",
+        "Posture Defensive": "Tu peux parer/esquiver une attaque en réussissant un jet de Physique.",
         "Posture Focus": "Tes sorts coûtent 1 point de magie en moins. Gagne +5% à tes caractéristiques."
     }
     st.markdown(
@@ -75,5 +75,23 @@ pm = base_pm + mod_pm
 with col1:
     st.markdown(f"🩸 **Tes points de vie → {pv}**")
     st.markdown(f"✨ **Tes points de magie → {pm}**")
+
+# 7. Choisis tes compétences
+st.markdown("<h2>📝 Choisis tes compétences (+10%)</h2>", unsafe_allow_html=True)
+# Quatre blocs côte à côte pour 4 compétences
+skills = [
+    "Discrétion +10%", "Combats aux lames +10%", "Artisanat +10%", "Persuasion +10%",
+    "Tromperie +10%", "Arcane +10%", "Survie +10%", "Athlétisme +10%",
+    "Perception +10%", "Histoire +10%", "Botanique +10%", "Mécanisme +10%",
+    "Natation +10%", "Pilotage +10%", "Négociation +10%", "Investigation +10%",
+    "Intimidation +10%", "Danse +10%", "Acrobatie +10%", "Soin +10%"
+]
+
+cols_comp = st.columns(4)
+choix_competences = []
+for i in range(4):
+    with cols_comp[i]:
+        choix = st.selectbox(f"Compétence {i+1}", ["──"] + skills, key=f"comp{i+1}")
+        choix_competences.append(choix)
 
 # (le reste de ton code suit ici...)
