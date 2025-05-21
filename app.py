@@ -1,3 +1,7 @@
+import streamlit as st
+import pandas as pd
+import json
+
 # 1. Configuration de la page
 st.set_page_config(
     page_title="Créateur de fiche de personnage",
@@ -95,7 +99,7 @@ if total_stats < 170:
 elif total_stats > 170:
     st.error(f"Tu as dépassé de {total_stats - 170}%. Réduis tes statistiques.")
 
-# 7. Choisis tes compétences
+# 7. Choisis tes compétences  
 st.markdown("<h2>📝 Choisis tes Bonus de Statistiques</h2>", unsafe_allow_html=True)
 skills = [
     "Discrétion +10 %", "Combats aux lames +10 %", "Artisanat +10 %", "Persuasion +10 %",
@@ -108,8 +112,12 @@ cols_comp = st.columns(4)
 choix_competences = []
 for i in range(4):
     with cols_comp[i]:
-        choix = st.selectbox(f"Compétence {i+1}", ["──"] + skills, key=f"comp{i+1}")
-        choix_competences.append(choix)
+        choix = st.selectbox("", ["──"] + skills, key=f"comp{i+1}")
+        if choix == "Autre":
+            autres = st.text_input("Précisez autre bonus", key=f"other_bonus_{i}")
+            choix_competences.append(autres)
+        else:
+            choix_competences.append(choix)
 
 # 8. Choix de l'arme principale, secondaire et armure
 st.markdown("<h2>🛠️  Arme & Armure</h2>", unsafe_allow_html=True)
@@ -132,20 +140,19 @@ with arm_cols[2]:
         "──", "Protège 3 (armure lourde)", "Protège 2 (armure moyenne)", "Protège 1 (armure légère)"
     ], key="armure")
 
-# 9. Équipement
-st.markdown("<h2>🎒 Équipement</h2>", unsafe_allow_html=True)
+# 9. Équipement\ nst.markdown("<h2>🎒 Équipement</h2>", unsafe_allow_html=True)
 eq_cols = st.columns(2)
 equipement_options = [
-    "Corde 10m", "Torche", "Sac à dos", "Tente", "Rations (1 jour)", "Trousse de soin", 
-    "Bourse de pièces", "Grappin", "Plume et encre", "Livre de sorts", "Bottes de voyage", 
-    "Amulette de protection", "Potion de soin", "Carte de la région", "Bâton de marche", 
+    "Corde 10m", "Torche", "Sac à dos", "Tente", "Rations (1 jour)", "Trousse de soin",
+    "Bourse de pièces", "Grappin", "Plume et encre", "Livre de sorts", "Bottes de voyage",
+    "Amulette de protection", "Potion de soin", "Carte de la région", "Bâton de marche",
     "Lanterne", "Tenue de camouflage", "Couteau de lancer", "Fiole d'huile", "Autre"
 ]
 equipement = []
 for col in eq_cols:
     for idx in range(4):
         key = f"equip_{eq_cols.index(col)}_{idx}"
-        choix_eq = col.selectbox(f"Equipement {eq_cols.index(col)*4 + idx+1}", ["──"] + equipement_options, key=key)
+        choix_eq = col.selectbox("", ["──"] + equipement_options, key=key)
         if choix_eq == "Autre":
             autres = col.text_input("Précisez autre équipement", key=f"other_{key}")
             equipement.append(autres)
