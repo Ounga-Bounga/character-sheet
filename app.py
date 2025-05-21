@@ -48,7 +48,7 @@ with col3:
         "Posture Focus": "Tes sorts coûtent 1 point de magie en moins. Gagne +5% à tes caractéristiques."
     }
     st.markdown(
-        f"<p style='text-align:center; font-size:0.9rem;'>{posture_bonuses[posture]}</p>",
+        f"<p style='text-align:left; font-size:0.9rem;'>{posture_bonuses[posture]}</p>",
         unsafe_allow_html=True
     )
 
