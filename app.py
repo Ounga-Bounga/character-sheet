@@ -79,25 +79,32 @@ with col1:
 
 # 7. Quelles sont tes Statistiques ?
 st.markdown("<h2>📊 Quelles sont tes Statistiques ?</h2>", unsafe_allow_html=True)
+# 7. Quelles sont tes Statistiques ?
+st.markdown("<h2>📊 Quelles sont tes Statistiques ?</h2>", unsafe_allow_html=True)
 stats_col1, stats_col2, stats_col3 = st.columns(3)
 
 with stats_col1:
     physique = st.slider(
-        label="Physique (%)", min_value=30, max_value=70, value=30, step=5,
-        key="physique", orientation="vertical"
+        "Physique (%)", min_value=30, max_value=70, value=30, step=5, key="physique"
     )
 with stats_col2:
     mental = st.slider(
-        label="Mental (%)", min_value=30, max_value=70, value=30, step=5,
-        key="mental", orientation="vertical"
+        "Mental (%)", min_value=30, max_value=70, value=30, step=5, key="mental"
     )
 with stats_col3:
     social = st.slider(
-        label="Social (%)", min_value=30, max_value=70, value=30, step=5,
-        key="social", orientation="vertical"
+        "Social (%)", min_value=30, max_value=70, value=30, step=5, key="social"
     )
 
 # Vérification de la somme et affichage du % restant
+
+total_stats = physique + mental + social
+if total_stats < 170:
+    restant = 170 - total_stats
+    st.warning(f"Il reste {restant}% à répartir.")
+elif total_stats > 170:
+    excedent = total_stats - 170
+    st.error(f"Tu as dépassé de {excedent}%. Réduis tes statistiques.")
 total_stats = physique + mental + social
 if total_stats < 170:
     restant = 170 - total_stats
