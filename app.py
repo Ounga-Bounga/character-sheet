@@ -25,8 +25,8 @@ st.markdown("<h1>Créer ton personnage niveau 1 !</h1>", unsafe_allow_html=True)
 
 # 4. Widgets d’entrée
 st.header("Création du personnage")
-# Colonnes réparties 30% / 30% / 30% / 10%
-col1, col2, col3, col4 = st.columns([3, 3, 3, 1])
+# Colonnes réparties 25% / 25% / 25% / 25%
+col1, col2, col3, col4 = st.columns([2.5, 2.5, 2.5, 2.5])
 
 with col1:
     st.markdown("**🤖 Comment t'appelles-tu ?**")
