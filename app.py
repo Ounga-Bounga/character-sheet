@@ -1,162 +1,149 @@
 import streamlit as st
-import pandas as pd
-import json
 
 # 1. Configuration de la page
 st.set_page_config(
     page_title="Créateur de fiche de personnage",
     page_icon="🎲",
     layout="wide",
-    initial_sidebar_state="expanded"
 )
 
-# 2. Injection CSS pour centrer titre et sous-titres
+# 2. CSS minimal pour centrer les titres
 st.markdown("""
     <style>
       h1, h2, h3 { text-align: center !important; }
+      .info-box { background: #f7f7f7; padding: 1rem; border-radius: 8px; }
     </style>
     """, unsafe_allow_html=True)
 
-# 3. Titre principal centré
-st.markdown("<h1>✨Abra Cadabra✨</h1>", unsafe_allow_html=True)
+# 3. Titre principal
+st.markdown("<h1>✨ Abra Cadabra ✨</h1>", unsafe_allow_html=True)
 
-# 4. Widgets d’entrée
-st.header("Créer ton personnage lvl 1 !")
+# 4. Onglets pour découper le parcours
+tab_info, tab_stats, tab_skills, tab_gear = st.tabs([
+    "📝 Identité & Choix",
+    "📊 Statistiques",
+    "⚔️ Compétences",
+    "🎒 Équipement"
+])
 
-# Colonnes réparties également en quatre
-col1, col2, col3, col4 = st.columns([2.5, 2.5, 2.5, 2.5])
+# --- Onglet 1 : Identité & Choix ---
+with tab_info:
+    st.header("Créer ton personnage lvl 1 !")
+    col1, col2, col3, col4 = st.columns([3, 3, 3, 3])
 
-with col1:
-    st.markdown("**🤖 Comment t'appelles-tu ?**")
-    nom = st.text_input("Nom du personnage")
+    with col1:
+        st.subheader("🤖 Nom")
+        nom = st.text_input("")
 
-with col2:
-    st.markdown("**⚔️ Choisis ta posture de base**")
-    posture = st.selectbox(
-        "", ["──", "Posture Agressive", "Posture Defensive", "Posture Focus"], key="posture"
+    with col2:
+        st.subheader("⚔️ Posture")
+        posture = st.selectbox("", ["──", "Agressive", "Defensive", "Focus"])
+        bonuses = {
+            "Agressive": "Armes: dégâts max +1.\nCritiques: +10 %.",
+            "Defensive": "Peut parer/esquiver sur jet de Physique réussi.",
+            "Focus": "Sorts: -1 PM. Carac: +5 %."
+        }
+        if posture != "──":
+            st.info(bonuses[posture])
+
+    with col3:
+        st.subheader("🛡️ Classe")
+        classe = st.selectbox("", ["──", "Lourde", "Moyenne", "Légère"])
+        info_classe = {
+            "Lourde": "+4 PV\n-2 PM\n1 sort magique",
+            "Moyenne": "+1 PV\n+1 PM\n2 sorts magiques",
+            "Légère": "-3 PV\n+3 PM\n3 sorts magiques"
+        }
+        if classe != "──":
+            st.info(info_classe[classe])
+
+    # Calcul PV/PM immédiat
+    base_pv, base_pm = 6, 4
+    mods = {"Lourde": (4, -2), "Moyenne": (1, 1), "Légère": (-2, 3)}
+    mod_pv, mod_pm = mods.get(classe, (0, 0))
+    pv, pm = base_pv + mod_pv, base_pm + mod_pm
+
+    with col4:
+        st.subheader("❤️ PV & PM")
+        st.markdown(f"🩸 **PV** → {pv}")
+        st.markdown(f"✨ **PM** → {pm}")
+
+# --- Onglet 2 : Statistiques ---
+with tab_stats:
+    st.header("📊 Répartition des 170 %")
+    cols = st.columns(3)
+    with cols[0]:
+        st.subheader("💪 Physique")
+        physique = st.slider(" ", 30, 70, 30, step=5, key="physique")
+    with cols[1]:
+        st.subheader("🧠 Mental")
+        mental = st.slider(" ", 30, 70, 30, step=5, key="mental")
+    with cols[2]:
+        st.subheader("🗣️ Social")
+        social = st.slider(" ", 30, 70, 30, step=5, key="social")
+
+    total = physique + mental + social
+    if total < 170:
+        st.warning(f"Il reste {170 - total}% à répartir.")
+    elif total > 170:
+        st.error(f"Dépassement de {total - 170}% !")
+
+# --- Onglet 3 : Compétences ---
+with tab_skills:
+    st.header("⚔️ Choisis 4 compétences (+10 %)")
+    skills_list = [
+        "Discrétion", "Lames", "Artisanat", "Persuasion", "Tromperie",
+        "Arcane", "Survie", "Athlétisme", "Perception", "Histoire",
+        "Botanique", "Mécanisme", "Natation", "Pilotage", "Négociation",
+        "Investigation", "Intimidation", "Danse", "Acrobatie", "Soin"
+    ]
+    choix = st.multiselect(
+        "", [f"{s} +10 %" for s in skills_list],
+        help="Sélectionne exactement 4 compétences",
+        max_selections=4
     )
-    posture_bonuses = {
-        "Posture Agressive": (
-            "Tes armes infligent les dégâts max +1.\n"
-            "Tes coups critiques passent à 10 %."
-        ),
-        "Posture Defensive": "Tu peux parer ou esquiver grâce à un jet de Physique réussi.",
-        "Posture Focus": (
-            "Tes sorts coûtent 1 PM en moins.\n"
-            "Gagne +5 % aux caractéristiques."
-        )
-    }
-    if posture != "──":
-        st.markdown(
-            f"<div style='text-align:left; white-space:pre-line; font-size:0.9rem;'>{posture_bonuses[posture]}</div>",
-            unsafe_allow_html=True
-        )
+    if len(choix) not in (0, 4):
+        st.warning("Tu dois en choisir exactement 4.")
 
-with col3:
-    st.markdown("**🛡️ Choisis ton type de classe**")
-    classe = st.selectbox(
-        "", ["──", "Lourde", "Moyenne", "Légère"], key="classe"
-    )
-    class_info = {
-        "Lourde": "+4 pv\n-2 pm\n1 sort magique",
-        "Moyenne": "+1 pv\n+1 pm\n2 sorts magiques",
-        "Légère": "-3 pv\n+3 pm\n3 sorts magiques"
-    }
-    if classe != "──":
-        st.markdown(
-            f"<div style='text-align:left; white-space:pre-line; font-size:0.9rem;'>{class_info[classe]}</div>",
-            unsafe_allow_html=True
+# --- Onglet 4 : Équipement & Armes ---
+with tab_gear:
+    st.header("🎒 Équipement & Armure")
+    # Armes
+    wa1, wa2, wa3 = st.columns(3)
+    with wa1:
+        st.subheader("🔹 Arme principale")
+        arme1 = st.selectbox("",
+            ["──","1d4 dague","1d6 épée","1d8 longue","1d10 deux mains",
+             "1d12 arbalète","pistolet (recharge)"]
+        )
+    with wa2:
+        st.subheader("🔸 Arme secondaire")
+        arme2 = st.selectbox("",
+            ["──","dague/poing","arc","couteau","pistolet rap."] 
+        )
+    with wa3:
+        st.subheader("🛡️ Armure")
+        armure = st.selectbox("",
+            ["──","Protège 3 (lourde)","Protège 2 (moyenne)","Protège 1 (légère)"]
         )
 
-# 5. Calcul des PV / PM selon la classe
-base_pv, base_pm = 6, 4
-mod_map = {"Lourde": (4, -2), "Moyenne": (1, 1), "Légère": (-2, 3)}
-mod_pv, mod_pm = mod_map.get(classe, (0, 0))
-pv, pm = base_pv + mod_pv, base_pm + mod_pm
-
-with col4:
-    st.markdown("**❤️ Tes PV & PM**")
-    st.markdown(f"🩸 **PV → {pv}**")
-    st.markdown(f"✨ **PM → {pm}**")
-
-# 6. Quelles sont tes Statistiques ?
-st.markdown("<h2>📊 Quelles sont tes Statistiques ?</h2>", unsafe_allow_html=True)
-stats_col1, stats_col2, stats_col3 = st.columns(3)
-with stats_col1:
-    st.markdown("<h3>💪 Physique</h3>", unsafe_allow_html=True)
-    physique = st.slider("", 30, 70, 30, step=5, key="physique")
-with stats_col2:
-    st.markdown("<h3>🧠 Mental</h3>", unsafe_allow_html=True)
-    mental = st.slider("", 30, 70, 30, step=5, key="mental")
-with stats_col3:
-    st.markdown("<h3>🗣️ Social</h3>", unsafe_allow_html=True)
-    social = st.slider("", 30, 70, 30, step=5, key="social")
-
-# Vérification de la somme et affichage du % restant ou excédent
-total_stats = physique + mental + social
-if total_stats < 170:
-    st.warning(f"Il reste {170 - total_stats}% à répartir.")
-elif total_stats > 170:
-    st.error(f"Tu as dépassé de {total_stats - 170}%. Réduis tes statistiques.")
-
-# 7. Choisis tes compétences  
-st.markdown("<h2>📝 Choisis tes Bonus de Statistiques</h2>", unsafe_allow_html=True)
-skills = [
-    "Discrétion +10 %", "Combats aux lames +10 %", "Artisanat +10 %", "Persuasion +10 %",
-    "Tromperie +10 %", "Arcane +10 %", "Survie +10 %", "Athlétisme +10 %",
-    "Perception +10 %", "Histoire +10 %", "Botanique +10 %", "Mécanisme +10 %",
-    "Natation +10 %", "Pilotage +10 %", "Négociation +10 %", "Investigation +10 %",
-    "Intimidation +10 %", "Danse +10 %", "Acrobatie +10 %", "Soin +10 %"
-]
-cols_comp = st.columns(4)
-choix_competences = []
-for i in range(4):
-    with cols_comp[i]:
-        choix = st.selectbox("", ["──"] + skills, key=f"comp{i+1}")
-        if choix == "Autre":
-            autres = st.text_input("Précisez autre bonus", key=f"other_bonus_{i}")
-            choix_competences.append(autres)
-        else:
-            choix_competences.append(choix)
-
-# 8. Choix de l'arme principale, secondaire et armure
-st.markdown("<h2>🛠️  Arme & Armure</h2>", unsafe_allow_html=True)
-arm_cols = st.columns(3)
-with arm_cols[0]:
-    st.markdown("**Arme Principale**")
-    arme1 = st.selectbox("", [
-        "──", "1d4 - dague/poing", "1d6 - épée/arc", "1d8 - épée longue",
-        "1d10 - épée à deux mains", "1d12 - arbalète lourde", "Fusil/Pistolet (recharge mouvement)"
-    ], key="arme1")
-with arm_cols[1]:
-    st.markdown("**Arme Secondaire**")
-    arme2 = st.selectbox("", [
-        "──", "1d4 - dague/poing", "1d6 - épée/arc", "1d8 - épée longue",
-        "1d10 - épée à deux mains", "1d12 - arbalète lourde", "Fusil/Pistolet (recharge mouvement)"
-    ], key="arme2")
-with arm_cols[2]:
-    st.markdown("**Type d'Armure**")
-    armure = st.selectbox("", [
-        "──", "Protège 3 (armure lourde)", "Protège 2 (armure moyenne)", "Protège 1 (armure légère)"
-    ], key="armure")
-
-# 9. Équipement\ nst.markdown("<h2>🎒 Équipement</h2>", unsafe_allow_html=True)
-eq_cols = st.columns(2)
-equipement_options = [
-    "Corde 10m", "Torche", "Sac à dos", "Tente", "Rations (1 jour)", "Trousse de soin",
-    "Bourse de pièces", "Grappin", "Plume et encre", "Livre de sorts", "Bottes de voyage",
-    "Amulette de protection", "Potion de soin", "Carte de la région", "Bâton de marche",
-    "Lanterne", "Tenue de camouflage", "Couteau de lancer", "Fiole d'huile", "Autre"
-]
-equipement = []
-for col in eq_cols:
-    for idx in range(4):
-        key = f"equip_{eq_cols.index(col)}_{idx}"
-        choix_eq = col.selectbox("", ["──"] + equipement_options, key=key)
-        if choix_eq == "Autre":
-            autres = col.text_input("Précisez autre équipement", key=f"other_{key}")
-            equipement.append(autres)
-        else:
-            equipement.append(choix_eq)
-
-# (le reste de ton code suit ici...)
+    # Autres équipements
+    st.subheader("🧰 Autres équipements")
+    with st.expander("Ajouter / modifier ton équipement"):
+        eq1, eq2 = st.columns(2)
+        options = [
+            "Corde 10m","Torche","Sac à dos","Tente","Rations",
+            "Trousse de soin","Bourse de pièces","Grappin","Livre de sorts",
+            "Bottes","Potion","Carte","Bâton","Lanterne","Camouflage",
+            "Couteau","Fiole d'huile","Autre"
+        ]
+        equipment = []
+        for col in (eq1, eq2):
+            for _ in range(4):
+                choice = col.selectbox("", ["──"] + options)
+                if choice == "Autre":
+                    custom = col.text_input("Précisez", "")
+                    equipment.append(custom or "Autre")
+                elif choice != "──":
+                    equipment.append(choice)
+    st.markdown(f"**Équipement choisi :** {', '.join(equipment)}")
