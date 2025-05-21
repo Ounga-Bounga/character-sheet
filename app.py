@@ -79,8 +79,6 @@ with col1:
 
 # 7. Quelles sont tes Statistiques ?
 st.markdown("<h2>📊 Quelles sont tes Statistiques ?</h2>", unsafe_allow_html=True)
-# 7. Quelles sont tes Statistiques ?
-st.markdown("<h2>📊 Quelles sont tes Statistiques ?</h2>", unsafe_allow_html=True)
 stats_col1, stats_col2, stats_col3 = st.columns(3)
 
 with stats_col1:
@@ -98,13 +96,6 @@ with stats_col3:
 
 # Vérification de la somme et affichage du % restant
 
-total_stats = physique + mental + social
-if total_stats < 170:
-    restant = 170 - total_stats
-    st.warning(f"Il reste {restant}% à répartir.")
-elif total_stats > 170:
-    excedent = total_stats - 170
-    st.error(f"Tu as dépassé de {excedent}%. Réduis tes statistiques.")
 total_stats = physique + mental + social
 if total_stats < 170:
     restant = 170 - total_stats
