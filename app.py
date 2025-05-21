@@ -36,36 +36,69 @@ with col2:
     st.markdown("**⚔️ Choisis ta posture de base**")
     posture = st.selectbox(
         "",
-        ["Posture Agressive", "Posture Defensive", "Posture Focus"]
+        ["──", "Posture Agressive", "Posture Defensive", "Posture Focus"],
+        key="posture"
     )
-    # Posture bonuses avec retours à la ligne
     posture_bonuses = {
-        "Posture Agressive":
-            "Tes armes infligent les dégâts max +1.<br>"
-            "Tes coups critiques passent à 10 %.",
-        "Posture Defensive":
-            "Tu peux parer ou esquiver grâce à un jet de Physique réussi.",
-        "Posture Focus":
-            "Tes sorts coûtent 1 PM en moins.<br>"
+        "Posture Agressive": (
+            "Tes armes infligent les dégâts max +1.\n"
+            "Tes coups critiques passent à 10 %."
+        ),
+        "Posture Defensive": "Tu peux parer ou esquiver grâce à un jet de Physique réussi.",
+        "Posture Focus": (
+            "Tes sorts coûtent 1 PM en moins.\n"
             "Gagne +5 % aux caractéristiques."
+        )
     }
-    st.markdown(
-        f"<div style='text-align:left; font-size:0.9rem;'>{posture_bonuses[posture]}</div>",
-        unsafe_allow_html=True
-    )
+    if posture != "──":
+        st.markdown(
+            f"<div style='text-align:left; font-size:0.9rem; white-space:pre-line;'>"
+            f"{posture_bonuses[posture]}</div>",
+            unsafe_allow_html=True
+        )
 
 with col3:
     st.markdown("**🛡️ Choisis ton type de classe**")
-    classe = st.selectbox("", ["Lourde", "Moyenne", "Légère"])
+    classe = st.selectbox(
+        "",
+        ["──", "Lourde", "Moyenne", "Légère"],
+        key="classe"
+    )
+    class_info = {
+        "Lourde": (
+            "+4 points de vie\n"
+            "-2 points de magie\n"
+            "1 sort magique"
+        ),
+        "Moyenne": (
+            "+1 point de vie\n"
+            "+1 point de magie\n"
+            "2 sorts magiques"
+        ),
+        "Légère": (
+            "-3 points de vie\n"
+            "+3 points de magie\n"
+            "3 sorts magiques"
+        )
+    }
+    if classe != "──":
+        st.markdown(
+            f"<div style='text-align:left; font-size:0.9rem; white-space:pre-line;'>"
+            f"{class_info[classe]}</div>",
+            unsafe_allow_html=True
+        )
 
 # 5. Calcul des PV / PM selon la classe
 base_pv, base_pm = 6, 4
 mod_map = {
     "Lourde": (4, -2),
-    "Moyenne": (1, 1),
+    "Moyenne": (1,  1),
     "Légère": (-2, 3)
 }
-mod_pv, mod_pm = mod_map[classe]
+if classe in mod_map:
+    mod_pv, mod_pm = mod_map[classe]
+else:
+    mod_pv, mod_pm = (0, 0)
 pv = base_pv + mod_pv
 pm = base_pm + mod_pm
 
@@ -77,7 +110,6 @@ with col4:
 # 6. Quelles sont tes Statistiques ?
 st.markdown("<h2>📊 Quelles sont tes Statistiques ?</h2>", unsafe_allow_html=True)
 stats_col1, stats_col2, stats_col3 = st.columns(3)
-
 with stats_col1:
     physique = st.slider("Physique (%)", 30, 70, 30, step=5, key="physique")
 with stats_col2:
