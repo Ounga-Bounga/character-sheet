@@ -34,7 +34,7 @@ with col1:
 
 with col2:
     st.markdown("<h3>🛡️ Choisis ton type de classe</h3>", unsafe_allow_html=True)
-    classe = st.selectbox("", ["Lourd", "Moyen", "Léger"])
+    classe = st.selectbox("", ["Lourde", "Moyenne", "Légère"])
 
 with col3:
     st.markdown("<h3>⚔️ Choisis ta posture de base</h3>", unsafe_allow_html=True)
@@ -63,9 +63,9 @@ with col4:
 # 5. Calcul des PV / PM selon la classe
 base_pv, base_pm = 6, 4
 mod_map = {
-    "Lourd": (4, -2),
-    "Moyen": (1,  1),
-    "Léger": (-2, 3)
+    "Lourde": (4, -2),
+    "Moyenne": (1,  1),
+    "Légère": (-2, 3)
 }
 mod_pv, mod_pm = mod_map[classe]
 pv = base_pv + mod_pv
