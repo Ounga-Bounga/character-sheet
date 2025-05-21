@@ -115,21 +115,37 @@ for i in range(4):
         choix = st.selectbox(f"Compétence {i+1}", ["──"] + skills, key=f"comp{i+1}")
         choix_competences.append(choix)
 
-# 8. Choix de l'arme principale et de l'armure
-st.markdown("<h2>🛠️ Type d'Arme Principale & Armure</h2>", unsafe_allow_html=True)
-weapon_opts = [
-    "──", "1d4 - dague/poing", "1d6 - épée/arc", "1d8 - épée longue",
-    "1d10 - épée à deux mains", "1d12 - arbalète lourde", "fusil/pistolet (recharge mouvement)"
-]
-armor_opts = [
-    "──", "Protège 3 (armure lourde)", "Protège 2 (armure moyenne)", "Protège 1 (armure légère)"
-]
-cols_wa = st.columns(2)
-with cols_wa[0]:
+# 8. Choix de l'arme principale, arme secondaire et équipement
+st.markdown("<h2>🛠️ Armes & Équipement</h2>", unsafe_allow_html=True)
+wa_col1, wa_col2 = st.columns(2)
+with wa_col1:
     st.markdown("**Choisis ton arme principale**")
-    arme = st.selectbox("", weapon_opts, key="arme")
-with cols_wa[1]:
-    st.markdown("**Choisis ton armure**")
-    armure = st.selectbox("", armor_opts, key="armure")
+    weapon_opts = [
+        "──", "1d4 - dague/poing", "1d6 - épée/arc", "1d8 - épée longue",
+        "1d10 - épée à deux mains", "1d12 - arbalète lourde", "fusil/pistolet (recharge mouvement)"
+    ]
+    arme_principale = st.selectbox("", weapon_opts, key="arme_principale")
+    st.markdown("**Choisis ton arme secondaire**")
+    arme_secondaire = st.selectbox("", weapon_opts, key="arme_secondaire")
+
+with wa_col2:
+    st.markdown("**Choisis ton équipement**")
+    equip_opts = [
+        "──", "Torche", "Corde (10m)", "Sac à dos", "Trousse de soins",
+        "Potion de soin", "Parchemin magique", "Crochet", "Bourse d'or",
+        "Sac de couchage", "Couteau de chasse", "Rations (1 jour)", "Jumelles",
+        "Carte de la région", "Bétail de poche", "Hachette", "Flèches (20)",
+        "Étui à sorts", "Lettre scellée", "Autre"
+    ]
+    eq_1 = st.selectbox("Slot 1", equip_opts, key="eq1")
+    eq_2 = st.selectbox("Slot 2", equip_opts, key="eq2")
+    eq_3 = st.selectbox("Slot 3", equip_opts, key="eq3")
+    eq_4 = st.selectbox("Slot 4", equip_opts, key="eq4")
+    st.markdown("---")
+    # Deuxième colonne d'équipement
+    eq_5 = st.selectbox("Slot 5", equip_opts, key="eq5")
+    eq_6 = st.selectbox("Slot 6", equip_opts, key="eq6")
+    eq_7 = st.selectbox("Slot 7", equip_opts, key="eq7")
+    eq_8 = st.selectbox("Slot 8", equip_opts, key="eq8")
 
 # (le reste de ton code suit ici...)
