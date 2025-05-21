@@ -80,7 +80,7 @@ with col4:
     st.markdown(f"✨ **PM → {pm}**")
 
 # 6. Quelles sont tes Statistiques ?
-st.markdown("<h2>📊 Quelles sont tes Statistiques ?</h2>", unsafe_allow_html=True)
+st.markdown("<h2>Quelles sont tes Statistiques ?</h2>", unsafe_allow_html=True)
 stats_col1, stats_col2, stats_col3 = st.columns(3)
 with stats_col1:
     st.markdown("<h3>💪 Physique</h3>", unsafe_allow_html=True)
