@@ -106,7 +106,7 @@ elif total_stats > 170:
     st.error(f"Tu as dépassé de {total_stats - 170}%. Réduis tes statistiques.")
 
 # 7. Choisis tes compétences
-st.markdown("<h2>📝 Choisis tes compétences (+10 %)</h2>", unsafe_allow_html=True)
+st.markdown("<h2>Choisis tes Bonus de Statisques</h2>", unsafe_allow_html=True)
 skills = [
     "Discrétion +10 %", "Combats aux lames +10 %", "Artisanat +10 %", "Persuasion +10 %",
     "Tromperie +10 %", "Arcane +10 %", "Survie +10 %", "Athlétisme +10 %",
