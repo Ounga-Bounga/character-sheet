@@ -10,22 +10,20 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# 2. Injection CSS pour centrer le titre principal et les sous-titres
-st.markdown(
-    """
+# 2. Injection CSS pour centrer titre et sous-titres
+st.markdown("""
     <style>
       h1, h2, h3 { text-align: center !important; }
     </style>
-    """,
-    unsafe_allow_html=True
-)
+    """, unsafe_allow_html=True)
 
 # 3. Titre principal centré
 st.markdown("<h1>Créer ton personnage niveau 1 !</h1>", unsafe_allow_html=True)
 
 # 4. Widgets d’entrée
 st.header("Création du personnage")
-# Colonnes réparties 25% / 25% / 25% / 25%
+
+# Colonnes réparties également en quatre
 col1, col2, col3, col4 = st.columns([2.5, 2.5, 2.5, 2.5])
 
 with col1:
@@ -52,7 +50,7 @@ with col2:
     }
     if posture != "──":
         st.markdown(
-            f"<div style='text-align:left; font-size:0.9rem; white-space:pre-line;'>"
+            f"<div style='text-align:left; white-space:pre-line; font-size:0.9rem;'>"
             f"{posture_bonuses[posture]}</div>",
             unsafe_allow_html=True
         )
@@ -65,59 +63,69 @@ with col3:
         key="classe"
     )
     class_info = {
-        "Lourde": (
-            "+4 points de vie\n"
-            "-2 points de magie\n"
-            "1 sort magique"
-        ),
-        "Moyenne": (
-            "+1 point de vie\n"
-            "+1 point de magie\n"
-            "2 sorts magiques"
-        ),
-        "Légère": (
-            "-3 points de vie\n"
-            "+3 points de magie\n"
-            "3 sorts magiques"
-        )
+        "Lourde": "+4 pv\n-2 pm\n1 sort magique",
+        "Moyenne": "+1 pv\n+1 pm\n2 sorts magiques",
+        "Légère": "-3 pv\n+3 pm\n3 sorts magiques"
     }
     if classe != "──":
         st.markdown(
-            f"<div style='text-align:left; font-size:0.9rem; white-space:pre-line;'>"
+            f"<div style='text-align:left; white-space:pre-line; font-size:0.9rem;'>"
             f"{class_info[classe]}</div>",
             unsafe_allow_html=True
         )
 
 # 5. Calcul des PV / PM selon la classe
 base_pv, base_pm = 6, 4
-mod_map = {
-    "Lourde": (4, -2),
-    "Moyenne": (1,  1),
-    "Légère": (-2, 3)
-}
-if classe in mod_map:
-    mod_pv, mod_pm = mod_map[classe]
-else:
-    mod_pv, mod_pm = (0, 0)
-pv = base_pv + mod_pv
-pm = base_pm + mod_pm
+mod_map = {"Lourde": (4, -2), "Moyenne": (1, 1), "Légère": (-2, 3)}
+mod_pv, mod_pm = mod_map.get(classe, (0, 0))
+pv, pm = base_pv + mod_pv, base_pm + mod_pm
 
 with col4:
-    st.markdown("**Tes Points de vie & magie**")
-    st.markdown(f"❤️ **PV → {pv}**")
+    st.markdown("**❤️ Tes PV & PM**")
+    st.markdown(f"🩸 **PV → {pv}**")
     st.markdown(f"✨ **PM → {pm}**")
 
 # 6. Quelles sont tes Statistiques ?
 st.markdown("<h2>📊 Quelles sont tes Statistiques ?</h2>", unsafe_allow_html=True)
 stats_col1, stats_col2, stats_col3 = st.columns(3)
-with stats_col1:
-    physique = st.slider("Physique (%)", 30, 70, 30, step=5, key="physique")
-with stats_col2:
-    mental   = st.slider("Mental (%)",   30, 70, 30, step=5, key="mental")
-with stats_col3:
-    social   = st.slider("Social (%)",   30, 70, 30, step=5, key="social")
 
-# Vérification de la somme et affichage du % restant
+with stats_col1:
+    st.markdown("<h3>💪 **Physique**</h3>", unsafe_allow_html=True)
+    physique = st.slider(
+        "",
+        min_value=30,
+        max_value=70,
+        value=30,
+        step=5,
+        key="physique",
+        orientation="vertical"
+    )
+
+with stats_col2:
+    st.markdown("<h3>🧠 **Mental**</h3>", unsafe_allow_html=True)
+    mental = st.slider(
+        "",
+        min_value=30,
+        max_value=70,
+        value=30,
+        step=5,
+        key="mental",
+        orientation="vertical"
+    )
+
+with stats_col3:
+    st.markdown("<h3>🗣️ **Social**</h3>", unsafe_allow_html=True)
+    social = st.slider(
+        "",
+        min_value=30,
+        max_value=70,
+        value=30,
+        step=5,
+        key="social",
+        orientation="vertical"
+    )
+
+# Vérification de la somme et affichage du % restant ou excédent
 total_stats = physique + mental + social
 if total_stats < 170:
     st.warning(f"Il reste {170 - total_stats}% à répartir.")
