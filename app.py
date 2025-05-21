@@ -18,10 +18,10 @@ st.markdown("""
     """, unsafe_allow_html=True)
 
 # 3. Titre principal centré
-st.markdown("<h1>Créer ton personnage niveau 1 !</h1>", unsafe_allow_html=True)
+st.markdown("<h1>Abra Cadabra..</h1>", unsafe_allow_html=True)
 
 # 4. Widgets d’entrée
-st.header("Création du personnage")
+st.header("Créer ton personnage lvl 1 !")
 
 # Colonnes réparties également en quatre
 col1, col2, col3, col4 = st.columns([2.5, 2.5, 2.5, 2.5])
