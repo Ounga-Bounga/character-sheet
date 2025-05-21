@@ -59,9 +59,7 @@ pm = base_pm + mod_pm
 
 # 6. Affichage des points de vie et de magie sous le nom
 with col1:
-    st.markdown("<h4>🩸 Tes points de vie</h4>", unsafe_allow_html=True)
-    st.markdown(f"<div style='font-size:1.5rem; text-align:center;'>{pv}</div>", unsafe_allow_html=True)
-    st.markdown("<h4>✨ Tes points de magie</h4>", unsafe_allow_html=True)
-    st.markdown(f"<div style='font-size:1.5rem; text-align:center;'>{pm}</div>", unsafe_allow_html=True)
+    st.markdown(f"🩸 **Tes points de vie → {pv}**")
+    st.markdown(f"✨ **Tes points de magie → {pm}**")
 
 # (le reste de ton code suit ici...)
