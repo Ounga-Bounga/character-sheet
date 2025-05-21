@@ -80,17 +80,31 @@ with col1:
 # 7. Quelles sont tes Statistiques ?
 st.markdown("<h2>📊 Quelles sont tes Statistiques ?</h2>", unsafe_allow_html=True)
 stats_col1, stats_col2, stats_col3 = st.columns(3)
-with stats_col1:
-    physique = st.slider("Physique (%)", 30, 70, 30, step=1)
-with stats_col2:
-    mental = st.slider("Mental (%)", 30, 70, 30, step=1)
-with stats_col3:
-    social = st.slider("Social (%)", 30, 70, 30, step=1)
 
-# Vérification de la somme
+with stats_col1:
+    physique = st.slider(
+        label="Physique (%)", min_value=30, max_value=70, value=30, step=5,
+        key="physique", orientation="vertical"
+    )
+with stats_col2:
+    mental = st.slider(
+        label="Mental (%)", min_value=30, max_value=70, value=30, step=5,
+        key="mental", orientation="vertical"
+    )
+with stats_col3:
+    social = st.slider(
+        label="Social (%)", min_value=30, max_value=70, value=30, step=5,
+        key="social", orientation="vertical"
+    )
+
+# Vérification de la somme et affichage du % restant
 total_stats = physique + mental + social
-if total_stats != 170:
-    st.error(f"La somme des statistiques doit être de 170 %, actuellement {total_stats} %.")
+if total_stats < 170:
+    restant = 170 - total_stats
+    st.warning(f"Il reste {restant}% à répartir.")
+elif total_stats > 170:
+    excedent = total_stats - 170
+    st.error(f"Tu as dépassé de {excedent}%. Réduis tes statistiques." )
 
 # 8. Choisis tes compétences
 st.markdown("<h2>📝 Choisis tes compétences (+10 %)</h2>", unsafe_allow_html=True)
