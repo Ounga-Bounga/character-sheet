@@ -140,8 +140,7 @@ with arm_cols[2]:
         "──", "Protège 3 (armure lourde)", "Protège 2 (armure moyenne)", "Protège 1 (armure légère)"
     ], key="armure")
 
-# 9. Équipement\ 
-nst.markdown("<h2>🎒 Équipement</h2>", unsafe_allow_html=True)
+# 9. Équipement\ nst.markdown("<h2>🎒 Équipement</h2>", unsafe_allow_html=True)
 eq_cols = st.columns(2)
 equipement_options = [
     "Corde 10m", "Torche", "Sac à dos", "Tente", "Rations (1 jour)", "Trousse de soin",
@@ -151,7 +150,7 @@ equipement_options = [
 ]
 equipement = []
 for col in eq_cols:
-    for idx in range(4):
+    for idx in range(3):
         key = f"equip_{eq_cols.index(col)}_{idx}"
         choix_eq = col.selectbox("", ["──"] + equipement_options, key=key)
         if choix_eq == "Autre":
